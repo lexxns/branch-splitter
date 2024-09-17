@@ -53,7 +53,12 @@ def git_repo(temp_git_repo):
 
 @pytest.fixture
 def mock_git_repo():
-    return Mock(spec=GitRepo)
+    with patch('branch_splitter.main_controller.GitRepo') as mock:
+        mock.return_value = mock
+        mock.repo = Mock()
+        mock.repo.working_dir = "/mock/repo/path"
+        mock.get_current_branch.return_value = "main"
+        yield mock
 
 
 @pytest.fixture
@@ -63,7 +68,8 @@ def branch_manager(mock_git_repo):
 
 @pytest.fixture
 def mock_branch_manager():
-    return Mock(spec=BranchManager)
+    with patch('branch_splitter.main_controller.BranchManager') as mock:
+        yield mock
 
 
 @pytest.fixture

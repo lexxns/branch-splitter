@@ -15,7 +15,7 @@ def test_main_controller_run(controller, mock_git_repo, mock_user_interface):
     mock_git_repo.return_value.get_current_branch.return_value = "main"
     mock_git_repo.return_value.repo.working_dir = "/mock/repo/path"
 
-    with patch('main_controller.typer.prompt') as mock_prompt:
+    with patch('branch_splitter.main_controller.typer.prompt') as mock_prompt:
         mock_prompt.side_effect = ["1", "new_branch", "5"]
         controller.run()
 
@@ -24,7 +24,7 @@ def test_main_controller_run(controller, mock_git_repo, mock_user_interface):
 
 def test_main_function(mock_git_repo, mock_branch_manager, mock_user_interface):
     runner = CliRunner()
-    with patch('main_controller.typer.prompt') as mock_prompt:
+    with patch('branch_splitter.main_controller.typer.prompt') as mock_prompt:
         mock_prompt.side_effect = ["/mock/repo/path", "5"]
         result = runner.invoke(_app)
 

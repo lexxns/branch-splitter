@@ -1,13 +1,13 @@
 import os
 from git import Repo, GitCommandError
-from git.exc import InvalidGitRepositoryError
+from git.exc import InvalidGitRepositoryError, NoSuchPathError
 
 
 class GitRepo:
     def __init__(self, repo_path):
         try:
             self.repo = Repo(repo_path)
-        except InvalidGitRepositoryError:
+        except (InvalidGitRepositoryError, NoSuchPathError):
             raise ValueError(f"The path {repo_path} is not a valid Git repository.")
 
     def get_current_branch(self):
