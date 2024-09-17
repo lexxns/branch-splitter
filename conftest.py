@@ -1,4 +1,4 @@
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import pytest
 from git import Repo
@@ -6,6 +6,7 @@ from typer.testing import CliRunner
 
 from branch_splitter.branch_manager import BranchManager
 from branch_splitter.git_repo import GitRepo
+from branch_splitter.main_controller import MainController
 from branch_splitter.user_interface import UserInterface
 
 
@@ -72,5 +73,16 @@ def user_interface(mock_git_repo, mock_branch_manager):
 
 
 @pytest.fixture
+def mock_user_interface():
+    with patch('branch_splitter.main_controller.UserInterface') as mock:
+        yield mock
+
+
+@pytest.fixture
 def runner():
     return CliRunner()
+
+
+@pytest.fixture
+def controller(mock_git_repo, mock_branch_manager, mock_user_interface):
+    return MainController("/mock/repo/path")
